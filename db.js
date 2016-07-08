@@ -89,10 +89,24 @@ module.exports.f_insert = function (req, res) {
 // save -> update data
 module.exports.f_update = function (req, res) {
     new Model.Book({
-            // name: 'Book',
-            id : 2
+        // name: 'Book',
+        id : 2
+    })
+        .save({name: 'Book update'})
+        .then(function (model) {
+            res.json(model)
         })
-        .save({name: 'Book update dsasdf'})
+        .catch(function (err) {
+            console.log(err);
+            res.send('Error');
+        })
+};
+
+// destroy data
+module.exports.f_destroy = function (req, res) {
+    new Model.Book()
+        .where({name: 'Book update dsasdf'})
+        .destroy()
         .then(function (model) {
             res.json(model)
         })

@@ -18,4 +18,5 @@ module.exports = function (app) {
     app.get('/related',     db.f_related);
     app.get('/insert',      db.f_insert);
     app.get('/update',      db.f_update);
+    app.get('/destroy',      db.f_destroy);
 };
