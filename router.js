@@ -19,4 +19,9 @@ module.exports = function (app) {
     app.get('/insert',      db.f_insert);
     app.get('/update',      db.f_update);
     app.get('/destroy',      db.f_destroy);
+
+    app.get('/allcustomers',    db.all_customer);
+    app.get('/allrentals',    db.all_rental);
+    app.get('/customerrelatedrental',    db.customer_related_rental);
+    
 };

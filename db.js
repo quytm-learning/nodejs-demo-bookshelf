@@ -4,6 +4,8 @@
 
 var Model = require('./models/Models');
 
+// =============================== Bookshelf ===========================================================================
+
 // fetchAll() -> return all rows in table books
 module.exports.f_fetchAll = function (req, res) {
     new Model.Book()
@@ -117,4 +119,68 @@ module.exports.f_destroy = function (req, res) {
 };
 
 
-//
+// ============================== Sakila ===============================================================================
+
+// Get all customer
+module.exports.all_customer = function (req, res) {
+    new Model.Customer()
+        .fetchAll()
+        .then(function (customers) {
+            res.json(customers);
+        })
+        .catch(function (err) {
+            res.send('Error');
+            console.log(err);
+        })
+};
+
+module.exports.all_rental = function (req, res) {
+    new Model.Customer()
+        .fetch()
+        .then(function (rentals) {
+            res.json(rentals);
+        })
+        .catch(function (err) {
+            res.send('Error');
+            console.log(err);
+        })
+};
+
+// module.exports.customer_related_rental = function (req, res) {
+//     new Model.Customer()
+//         // .where({
+//         //     'customer_id': 1
+//         // })
+//         .fetch(
+//             {withRelated: ['rental']}
+//         )
+//         .then(function (customers) {
+//             // res.json(customers);
+//             res.json(customers.related('rental'));
+//         })
+//         .catch(function (err) {
+//             console.log(err);
+//             res.send('Error');
+//         })
+// };
+
+module.exports.customer_related_rental = function (req, res) {
+    new Model.Customer()
+        .query(function (qb) {
+            qb.innerJoin('rental', 'customer.customer_id', 'rental.customer_id');
+            // qb.groupBy('customer.customer_id');
+            qb.where('customer.customer_id', '=', '1');
+        })
+        .fetchAll(
+            {columns: ['customer.customer_id','first_name']}
+        )
+        .then(function (customers) {
+            res.json(customers);
+            // res.json(customers.related('rental'));
+        })
+        .catch(function (err) {
+            console.log(err);
+            res.send('Error');
+        })
+};
+

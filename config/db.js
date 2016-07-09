@@ -13,4 +13,17 @@ var knex = require('knex')({
     }
 });
 
-module.exports = require('bookshelf')(knex);
+
+var knex2 = require('knex')({
+    client: 'mysql',
+    connection: {
+        host: '127.0.0.1',
+        user: 'root',
+        password: '1234',
+        database: 'sakila',
+        charset: 'utf8'
+    }
+});
+
+module.exports.db_bookshelf     = require('bookshelf')(knex);
+module.exports.db_sakila        = require('bookshelf')(knex2);
