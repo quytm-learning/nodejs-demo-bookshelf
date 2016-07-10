@@ -2,6 +2,8 @@
  * Created by tmq on 07/07/2016.
  */
 
+'use strict';
+
 var Model = require('./models/Models');
 
 // =============================== Bookshelf ===========================================================================
@@ -50,7 +52,7 @@ module.exports.f_where = function (req, res) {
 module.exports.f_related = function (req, res) {
     new Model.Book()
         .where('id', 1)
-        .fetch({ withRelated: ['pages']})
+        .fetch({withRelated: ['pages']})
         .then(function (books) {
             res.json(books.related('pages'));
         })
@@ -92,7 +94,7 @@ module.exports.f_insert = function (req, res) {
 module.exports.f_update = function (req, res) {
     new Model.Book({
         // name: 'Book',
-        id : 2
+        id: 2
     })
         .save({name: 'Book update'})
         .then(function (model) {
@@ -121,7 +123,7 @@ module.exports.f_destroy = function (req, res) {
 
 // ============================== Sakila ===============================================================================
 
-// Get all customer
+// Get all custome
 module.exports.all_customer = function (req, res) {
     new Model.Customer()
         .fetchAll()
@@ -133,6 +135,40 @@ module.exports.all_customer = function (req, res) {
             console.log(err);
         })
 };
+
+module.exports.test_abc = function (req, res) {
+    new Model.Customer({id: 1})
+        .fetch()
+        .then(function (customers) {
+            let customer = customers.attributes;
+            customers.address().fetch().then(function (a) {
+                customer.address = a.attributes;
+                res.json(customers);
+            });
+
+            // res.json(customers);
+        })
+        .catch(function (err) {
+            res.send('Error');
+            console.log(err);
+        })
+};
+
+module.exports.test_xyz = function (req, res) {
+    new Model.Address({id: 5})
+        .fetch({withRelated: ['customer']})
+        .then(function (address) {
+            // let a = address.attributes;
+           
+
+            res.json(address);
+        })
+        .catch(function (err) {
+            res.send('Error');
+            console.log(err);
+        })
+};
+
 
 module.exports.all_rental = function (req, res) {
     new Model.Customer()
@@ -147,16 +183,20 @@ module.exports.all_rental = function (req, res) {
 };
 
 // module.exports.customer_related_rental = function (req, res) {
-//     new Model.Customer()
-//         // .where({
-//         //     'customer_id': 1
-//         // })
+//     new Model.Customer({id: 1})
 //         .fetch(
-//             {withRelated: ['rental']}
+//             // {withRelated: ['rental']}
 //         )
 //         .then(function (customers) {
-//             // res.json(customers);
-//             res.json(customers.related('rental'));
+//             let customer = customers;
+//             customers.rental().fetch().then(function (rentals) {
+//                 console.log(rentals);
+//                 customer.rental = [];
+//                 customer.rental = rentals.toJSON;
+//                 // res.json(customer);
+//                 res.send(rentals);
+//             });
+//             // res.json(customers.rental());
 //         })
 //         .catch(function (err) {
 //             console.log(err);
@@ -164,23 +204,23 @@ module.exports.all_rental = function (req, res) {
 //         })
 // };
 
-module.exports.customer_related_rental = function (req, res) {
-    new Model.Customer()
-        .query(function (qb) {
-            qb.innerJoin('rental', 'customer.customer_id', 'rental.customer_id');
-            // qb.groupBy('customer.customer_id');
-            qb.where('customer.customer_id', '=', '1');
-        })
-        .fetchAll(
-            {columns: ['customer.customer_id','first_name']}
-        )
-        .then(function (customers) {
-            res.json(customers);
-            // res.json(customers.related('rental'));
-        })
-        .catch(function (err) {
-            console.log(err);
-            res.send('Error');
-        })
-};
+// module.exports.customer_related_rental = function (req, res) {
+//     new Model.Customer()
+//         .query(function (qb) {
+//             qb.innerJoin('rental', 'customer.customer_id', 'rental.customer_id');
+//             // qb.groupBy('customer.customer_id');
+//             qb.where('customer.customer_id', '=', '1');
+//         })
+//         .fetchAll(
+//             {columns: ['customer.customer_id', 'first_name']}
+//         )
+//         .then(function (customers) {
+//             res.json(customers);
+//             // res.json(customers.related('rental'));
+//         })
+//         .catch(function (err) {
+//             console.log(err);
+//             res.send('Error');
+//         })
+// };
 
