@@ -25,5 +25,8 @@ var knex2 = require('knex')({
     }
 });
 
+var Bookshelf = require('bookshelf')(knex2);
+Bookshelf.plugin('registry');
+
 module.exports.db_bookshelf     = require('bookshelf')(knex);
-module.exports.db_sakila        = require('bookshelf')(knex2);
+module.exports.db_sakila        = Bookshelf;

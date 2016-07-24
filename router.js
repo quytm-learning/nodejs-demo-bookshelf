@@ -24,6 +24,7 @@ module.exports = function (app) {
     app.get('/test', db.test_abc);
     app.get('/test2', db.test_xyz);
     app.get('/allrentals',    db.all_rental);
-    // app.get('/customerrelatedrental',    db.customer_related_rental);
+    app.get('/addressrelatedcustomer',    db.test_xyz);
+    app.get('/alladdress',    db.all_address);
 
 };

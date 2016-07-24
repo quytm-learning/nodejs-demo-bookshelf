@@ -123,9 +123,12 @@ module.exports.f_destroy = function (req, res) {
 
 // ============================== Sakila ===============================================================================
 
+var Customer = require('./models/Customer');
+var Address = require('./models/Address');
+var Rental = require('./models/Rental');
 // Get all custome
 module.exports.all_customer = function (req, res) {
-    new Model.Customer()
+    new Customer()
         .fetchAll()
         .then(function (customers) {
             res.json(customers);
@@ -137,7 +140,7 @@ module.exports.all_customer = function (req, res) {
 };
 
 module.exports.test_abc = function (req, res) {
-    new Model.Customer({id: 1})
+    new Customer({id: 1})
         .fetch()
         .then(function (customers) {
             let customer = customers.attributes;
@@ -155,12 +158,10 @@ module.exports.test_abc = function (req, res) {
 };
 
 module.exports.test_xyz = function (req, res) {
-    new Model.Address({id: 5})
+    new Address({id: 5})
         .fetch({withRelated: ['customer']})
         .then(function (address) {
             // let a = address.attributes;
-           
-
             res.json(address);
         })
         .catch(function (err) {
@@ -171,7 +172,7 @@ module.exports.test_xyz = function (req, res) {
 
 
 module.exports.all_rental = function (req, res) {
-    new Model.Customer()
+    new Customer()
         .fetch()
         .then(function (rentals) {
             res.json(rentals);
@@ -182,45 +183,15 @@ module.exports.all_rental = function (req, res) {
         })
 };
 
-// module.exports.customer_related_rental = function (req, res) {
-//     new Model.Customer({id: 1})
-//         .fetch(
-//             // {withRelated: ['rental']}
-//         )
-//         .then(function (customers) {
-//             let customer = customers;
-//             customers.rental().fetch().then(function (rentals) {
-//                 console.log(rentals);
-//                 customer.rental = [];
-//                 customer.rental = rentals.toJSON;
-//                 // res.json(customer);
-//                 res.send(rentals);
-//             });
-//             // res.json(customers.rental());
-//         })
-//         .catch(function (err) {
-//             console.log(err);
-//             res.send('Error');
-//         })
-// };
-
-// module.exports.customer_related_rental = function (req, res) {
-//     new Model.Customer()
-//         .query(function (qb) {
-//             qb.innerJoin('rental', 'customer.customer_id', 'rental.customer_id');
-//             // qb.groupBy('customer.customer_id');
-//             qb.where('customer.customer_id', '=', '1');
-//         })
-//         .fetchAll(
-//             {columns: ['customer.customer_id', 'first_name']}
-//         )
-//         .then(function (customers) {
-//             res.json(customers);
-//             // res.json(customers.related('rental'));
-//         })
-//         .catch(function (err) {
-//             console.log(err);
-//             res.send('Error');
-//         })
-// };
+module.exports.all_address = function (req, res) {
+    new Address()
+        .fetchAll()
+        .then(function (addresses) {
+            res.json(addresses);
+        })
+        .catch(function (err) {
+            res.send('Error');
+            console.log(err);
+        })
+};
 
